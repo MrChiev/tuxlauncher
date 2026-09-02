@@ -64,14 +64,16 @@ fi
 # Set Astroneer server port from the Pterodactyl primary allocation
 ENGINE_INI="/home/container/AstroneerServer/Astro/Saved/Config/WindowsServer/Engine.ini"
 
-if grep -q '^\[url\]' "$ENGINE_INI"; then
-    if grep -q '^Port=' "$ENGINE_INI"; then
-        sed -i "s/^Port=.*/Port=${SERVER_PORT}/" "$ENGINE_INI"
-    else
-        sed -i '/^\[url\]/a Port='"${SERVER_PORT}" "$ENGINE_INI"
+if grep -qi '^\[url\]' "$ENGINE_INI"; then
+    # Replace existing Port= inside [URL]
+    sed -i "/^\[URL\]/,/^\[/ { s/^Port=.*/Port=${SERVER_PORT}/; }" "$ENGINE_INI"
+
+    # Add Port if [URL] exists but doesn't contain one
+    if ! sed -n '/^\[URL\]/,/^\[/p' "$ENGINE_INI" | grep -q '^Port='; then
+        sed -i "/^\[URL\]/a Port=${SERVER_PORT}" "$ENGINE_INI"
     fi
 else
-    printf '\n[url]\nPort=%s\n' "${SERVER_PORT}" >> "$ENGINE_INI"
+    printf '\n[URL]\nPort=%s\n' "${SERVER_PORT}" >> "$ENGINE_INI"
 fi
 
 echo -e "${GREEN}[CONFIG]:${NC} Astroneer server port set to ${SERVER_PORT}"
