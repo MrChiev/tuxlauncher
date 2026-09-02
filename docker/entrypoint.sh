@@ -61,6 +61,21 @@ else
     echo -e "${BLUE}[UPDATER]: ${NC}Not updating game server as AUTO_UPDATE was Disabled. Starting Server!"
 fi
 
+# Set Astroneer server port from the Pterodactyl primary allocation
+ENGINE_INI="/home/container/AstroneerServer/Astro/Saved/Config/WindowsServer/Engine.ini"
+
+if grep -q '^\[url\]' "$ENGINE_INI"; then
+    if grep -q '^Port=' "$ENGINE_INI"; then
+        sed -i "s/^Port=.*/Port=${SERVER_PORT}/" "$ENGINE_INI"
+    else
+        sed -i '/^\[url\]/a Port='"${SERVER_PORT}" "$ENGINE_INI"
+    fi
+else
+    printf '\n[url]\nPort=%s\n' "${SERVER_PORT}" >> "$ENGINE_INI"
+fi
+
+echo -e "${GREEN}[CONFIG]:${NC} Astroneer server port set to ${SERVER_PORT}"
+
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo -e "${GREEN}[STARTUP]:${NC} Starting server with the following startup command: ${MODIFIED_STARTUP}"
