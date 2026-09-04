@@ -30,11 +30,6 @@ echo -e "${GREEN}Current Time Zone: ${GREEN} $(cat /etc/timezone)${NC}"
 echo -e "${GREEN}Current Wine Version:${GREEN} $(wine --version)${NC}"
 echo -e "${RED} ---------------------------------------------------------- ${NC}"
 
-if [ -f "/home/container/AstroTuxVersion" ]; then
-    echo -e "${YELLOW}[WARNING]: ${NC}Python has been removed! Please ensure your egg is up to date and a reinstall has been ran!${NC}"
-    sleep 5
-fi
-
 # Make internal Docker IP address available to processes.
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
