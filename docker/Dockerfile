@@ -12,7 +12,7 @@ RUN     dpkg --add-architecture i386 \
                         curl ca-certificates gnupg software-properties-common \
                         libc6:i386 libstdc++6:i386 libgcc-s1:i386 \
                         libncurses6:i386 libtinfo6:i386 libglib2.0-0:i386 \
-                        libsdl2-2.0-0:i386 winbind xauth numactl jq tzdata tini libgnutls30 gnutls-bin \
+                        libsdl2-2.0-0:i386 winbind xauth numactl jq tzdata tini libgnutls30 gnutls-bin iproute2 \
                 && mkdir -pm755 /etc/apt/keyrings \
                 && curl -sSL https://dl.winehq.org/wine-builds/winehq.key \
                         | gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key \
