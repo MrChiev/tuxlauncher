@@ -37,7 +37,7 @@ mkdir -p $WINEPREFIX
 
 # Check if AUTO_UPDATE is not set or set to 1 to update TuxServer
 if [ -z "${AUTO_UPDATE}" ] || [ "${AUTO_UPDATE}" == "1" ]; then
-    GIT_API=$(curl --silent "https://api.github.com/repos/JoeJoeTV/AstroTuxLauncher/releases/latest")
+    GIT_API=$(curl --silent "https://api.github.com/repos/MrChiev/AstroTuxLauncher/releases/latest")
     DOWNLOAD_URL=$(echo ${GIT_API} | jq .assets | jq -r .[].browser_download_url | grep -i "AstroTuxLauncher")
     VERSION=$(echo ${DOWNLOAD_URL} | grep -oP '(?<=/download/)[^/]+')
     if [ -f "/home/container/AstroTuxVersion" ]; then
